@@ -56,6 +56,8 @@ def _extract_tags(html):
         if len(html) <= 1:
             return stack
         tag = html[html.index('<'):html.index('>') + 1]
+        if ' ' in tag:
+            tag = tag[:tag.index(' ')] + '>'
         stack.append(tag)
         html = html[html.index('>') + 1:]
     return stack
