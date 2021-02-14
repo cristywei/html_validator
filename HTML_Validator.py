@@ -55,7 +55,7 @@ def _extract_tags(html):
     while '<' in html or '>' in html:
         if len(html) <= 1:
             return stack
-        tag = html[html.index('<'):html.index('>')+1]
+        tag = html[html.index('<') : html.index('>')+1]
         stack.append(tag)
-        html = html[html.index('>')+1:]
+        html = html[html.index('>') + 1:]
     return stack
