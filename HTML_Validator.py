@@ -17,6 +17,28 @@ def validate_html(html):
     # the main difference between your code and the code from class will be that you will have to keep track of not just the 3 types of parentheses,
     # but arbitrary text located between the html tags
 
+    tags  = _extract_tags(html) 
+    stack = []
+    if len(tags) == 0 and '<' in html:
+        return False
+    elif len(tags) == 0:
+        return True
+    if len(tags) == 1:
+        return False
+    for tag in tags:
+        if '/' not in tag:
+            stack.append(tag)
+        elif len(stack) != 0:
+            if stack[-1][1:len(stack[-1])] == tag[2:len(tag)]:
+                stack.pop()
+            else:
+                return False
+        else:
+            return False
+    if len(stack) == 0:
+        return True
+    return False
+
 
 def _extract_tags(html):
     '''
@@ -29,3 +51,14 @@ def _extract_tags(html):
     >>> _extract_tags('Python <strong>rocks</strong>!')
     ['<strong>', '</strong>']
     '''
+    stack = []
+    tag = ''
+    if '<' not in html or '>' not in html:
+        return stack
+    while '<' in html or '>'  in html:
+        if len(html) <= 1:
+            return stack
+        tag = html[html.index('<'):html.index('>')+1]
+        stack.append(tag)
+        html = html[html.index('>')+1:]
+    return stack
